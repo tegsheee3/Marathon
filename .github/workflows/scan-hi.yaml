@@ -1,0 +1,31 @@
+name: Scan Hi
+
+on:
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+jobs:
+    scan-hi:
+        name: Scan Hi Job 1
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Sources
+              uses: actions/checkout@v4
+              with:
+                  persist-credentials: false
+
+            - name: Set up JDK
+              uses: actions/setup-java@v4
+              with:
+                  distribution: "temurin"
+                  java-version: "17"
+            - name: setup Maven Dependency Cache
+              uses: actions/cache@v4
+              with:
+                  path: ~/.m2/repository
+                  key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-maven-
